@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon --exec 'ts-node --cache-directory .tscache' ./index.ts",
-    "start": "ts-node ./index.ts"
+    "start": "ts-node ./index.ts",
+    "toPost": "ts-node ./createPost.ts"
   },
   "devDependencies": {},
   "dependencies": {

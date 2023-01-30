@@ -1,4 +1,4 @@
-import { Error } from 'mongoose'
+import { Error, connect } from 'mongoose'
 const mongoose = require('mongoose')
 require('dotenv').config()
 
@@ -7,11 +7,11 @@ async function dbConnect(){
     .connect(process.env.DB_URL,
       {
         useNewUrlParser: true,
-        useUnifiedTopology: true,
-        //useCreateIndex: true,
-        bufferCommands: false,
-        serverSelectionTimeoutMS: 5000,
-        socketTimeoutMS: 45000
+        // useUnifiedTopology: true,
+        // //useCreateIndex: true,
+        // bufferCommands: false,
+        // serverSelectionTimeoutMS: 5000,
+        // socketTimeoutMS: 45000
       })
       .then(() => {
         console.log('connection ok fam, ive got this!');
