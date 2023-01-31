@@ -1,0 +1,14 @@
+h1{
+  font-family: sans-serif;
+  text-transform:uppercase;
+  font-weight: 700;
+}
+.post-content{
+  font-size: 1.1rem;
+  font-family: sans-serif;
+}
+.post-author{
+  font-style: italic;
+  font-family: sans-serif;
+  font-weight: 500;
+}
