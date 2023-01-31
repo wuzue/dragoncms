@@ -1,24 +1,26 @@
-const {Client} = require('pg');
+const fs = require("fs")
 
-const client = new Client({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'blog',
-  password: 'akawuz13',
-  port: 5432,
-});
+const newPost = {
+  title: "quarto",
+  content: "novo",
+  author: "rzin brabo"
+}
 
-client.connect();
-
-const createPost = async (title, content, author) => {
-  try {
-    const query = 'INSERT INTO posts (title, content, author) VALUES ($1, $2, $3)';
-    const values = [title, content, author];
-    const res = await client.query(query, values);
-    console.log('Post created');
-  } catch (error) {
-    console.log('Error creating post: ', error);
+fs.readFile('./posts.json', (error, data) => {
+  if(error){
+    console.error('error reading file ', error);
+  } else {
+    let posts = []
+    if(data.length > 0) {
+      posts = JSON.parse(data)
+    }
+    posts.push(newPost)
+    fs.writeFile('./posts.json', JSON.stringify(posts), (error) => {
+      if(error){
+        console.error('error writing file ', error);
+      }else{
+        console.log('post added to file!');
+      }
+    })
   }
-};
-
-createPost('Ta foda', 'asdhasdusadhsaudh', 'renan');
+})
