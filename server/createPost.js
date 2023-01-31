@@ -1,9 +1,9 @@
 const fs = require("fs")
 
 const newPost = {
-  title: "sexto post",
-  content: "++++++++",
-  author: "çççççççççççç"
+  title: "asdsadasd",
+  content: "7o post",
+  author: "78888o post"
 }
 
 fs.readFile('./posts.json', (error, data) => {
