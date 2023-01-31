@@ -4,6 +4,7 @@ import Blog from './components/Blog';
 // import './App.css'
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
 import AdminPage from './components/AdminPage';
+import PageNotFound from './components/PageNotFound';
 
 const App = () => {
 
@@ -13,8 +14,9 @@ const App = () => {
     // </div>
     <BrowserRouter>
       <Switch>
-        <Route exact path="/admin" component={AdminPage} />
         <Route exact path="/" component={Blog} />
+        <Route exact path="/admin" component={AdminPage} />
+        <Route component={PageNotFound}/>
       </Switch>
     </BrowserRouter>
   );
