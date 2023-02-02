@@ -1,29 +1,7 @@
-const express = require('express')
-const app = express()
-const posts = require('./posts.json')
+const express = require('express');
+const app = express();
 const cors = require('cors');
-const server = require('http').Server(app)
-const io = require('socket.io')(server)
-const nodemon = require('nodemon')
-
-nodemon({
-  script: 'server.js',
-  ext: 'js'
-})
-
-nodemon.on('restart', function(){
-  console.log('server restarted');
-  io.emit('serverRestarted')
-})
-
-nodemon.on('quit', function(){
-  console.log('app has quit');
-  process.exit()
-})
-
-nodemon.on('error', function(err){
-  console.error('an error occurred: ', err);
-})
+const sqlite3 = require('sqlite3').verbose();
 
 app.use(cors({
   origin: 'http://localhost:5173',
@@ -32,22 +10,56 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.json())
+app.use(express.json());
 
+// Connect to SQLite database
+const db = new sqlite3.Database('./posts.db', (err) => {
+  if (err) {
+    console.error(err.message);
+  }
+  console.log('Connected to the posts database.');
+});
+
+// Create posts table if it does not exist
+const createTable = `CREATE TABLE IF NOT EXISTS posts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  content TEXT NOT NULL,
+  author TEXT NOT NULL
+);`;
+db.run(createTable, (err) => {
+  if (err) {
+    console.error(err.message);
+  }
+});
+
+// Route to retrieve all posts
 app.get('/posts', (req, res) => {
-  res.send(posts)
-})
+  const sql = `SELECT * FROM posts;`;
+  db.all(sql, (err, rows) => {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).send({ error: 'An error occurred while retrieving posts' });
+    }
+    res.send(rows);
+  });
+});
 
+// Route to add a new post
 app.post('/posts', (req, res) => {
-  const newPost = req.body
-  posts.push(newPost)
-  res.send(posts)
-})
+  const newPost = req.body;
+  const sql = `INSERT INTO posts (title, content, author) 
+               VALUES (?, ?, ?);`;
+  db.run(sql, [newPost.title, newPost.content, newPost.author], function(err) {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).send({ error: 'An error occurred while adding the post' });
+    }
+    console.log(`A post has been added with id ${this.lastID}`);
+    res.send({ message: 'Post added successfully' });
+  });
+});
 
-io.on('connection', (socket) => {
-  console.log('client connected');
-})
-
-server.listen(3000, () => {
-  console.log('server is running on port 3000');
-})
+const server = app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
