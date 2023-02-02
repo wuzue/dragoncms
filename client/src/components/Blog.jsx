@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import io from 'socket.io-client'
 import './Blog.css'
+import luffy from '../assets/luffy.png'
+import { blogSubTitle, blogTitle } from '../configs';
 
 const Blog = () => {
   const [posts, setPosts] = useState([]);
@@ -23,7 +25,13 @@ const Blog = () => {
     })
   }, []);
 
-  return (
+  return (<>
+    <div>
+      <img src={luffy} alt='pirate king'/>
+      <h1>{blogTitle}</h1>
+      <h2>{blogSubTitle}</h2>
+    </div>
+
     <div>
       {posts.map(post => (
         <div key={post.id}>
@@ -33,7 +41,7 @@ const Blog = () => {
         </div>
       ))}
     </div>
-  );
+  </>);
 };
 
 export default Blog;
