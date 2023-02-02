@@ -3,4 +3,4 @@
 </p>
 
 
-<font size='5'><p align='center'>DragonCMS is a <span style='text-decoration:underline'>simple</span>, <span style='text-decoration:underline'>customizable</span> and <span style='text-decoration:underline'>portable</span> CMS. Perfect for bloggers, small businesses and personal websites.<br>Features user auth, dynamic content and responsive design.</p></font>
+<p align='center'  style="font-size: 1.5em"><b>DragonCMS</b> is a <u>simple</u>, <u>customizable</u> and <u>portable</u> CMS. Perfect for bloggers, small businesses and personal websites.<br>Features user auth, dynamic content and responsive design.</p>
