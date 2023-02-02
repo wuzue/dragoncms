@@ -45,6 +45,21 @@ app.get('/posts', (req, res) => {
   });
 });
 
+app.get("/posts/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = `SELECT * FROM posts WHERE id = ?;`;
+  db.get(sql, [id], (err, row) => {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).send({ error: 'An error occurred while retrieving the post' });
+    }
+    if (!row) {
+      return res.status(404).send({ message: 'Post not found' });
+    }
+    res.send(row);
+  }); 
+});
+
 // Route to add a new post
 app.post('/posts', (req, res) => {
   const newPost = req.body;
