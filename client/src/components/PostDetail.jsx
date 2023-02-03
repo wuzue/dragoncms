@@ -15,7 +15,7 @@ const PostDetail = () => {
   return (
     <div>
       <h2>{post.title}</h2>
-      <p>{post.content}</p>
+      <p className="text-[2rem] text-[blue]">{post.content}</p>
       <p>Author: {post.author}</p>
     </div>
   );
