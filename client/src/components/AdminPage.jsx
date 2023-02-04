@@ -109,7 +109,7 @@ const AdminPage = () => {
       />
       <ReactQuill
         value={content}
-        onChange={(event) => setContent(event.target.value)}
+        onChange={(value) => setContent(value)}
       />
       {/* <textarea
         placeholder="Content"
