@@ -1,12 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import { io } from 'socket.io-client'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
 
-const AdminPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [isAuthorized, setIsAuthorized] = useState(false);
+const AdminPage = () =>{
 
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -68,37 +63,6 @@ const AdminPage = () => {
     }
   }
 
-  //CHANGE IT!!!!!!!!!!!!!!!!!!!! ITS ONLY FOR DEVELOPMENT
-  //LOGIN IS ON FRONT-END, CHANGE IT!!!!!!
-  const handleLogin = (event) => {
-    event.preventDefault();
-    if (username === 'admin' && password === 'dragon') {
-      setIsAuthorized(true);
-    } else {
-      console.log(`errado manoookkkkk`)
-    }
-  };
-
-  if (!isAuthorized) {
-    return (
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-        <button type="submit">Login</button>
-      </form>
-    );
-  }
-
   return (<>
     <form onSubmit={handleSubmit}>
       <input
@@ -107,15 +71,11 @@ const AdminPage = () => {
         value={title}
         onChange={(event) => setTitle(event.target.value)}
       />
-      <ReactQuill
-        value={content}
-        onChange={(event) => setContent(event.target.value)}
-      />
-      {/* <textarea
+      <textarea
         placeholder="Content"
         value={content}
         onChange={(event) => setContent(event.target.value)}
-      /> */}
+      />
       <input
         type='text'
         placeholder='Author'
@@ -137,7 +97,7 @@ const AdminPage = () => {
         ))}
       </div>
     </div>
-  </>);
-};
+  </>)
+}
 
-export default AdminPage;
+export default AdminPage

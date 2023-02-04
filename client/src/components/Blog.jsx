@@ -39,7 +39,7 @@ const Blog = () => {
         <div key={post.id}>
           <p className='text-[1.5rem] text-[blue] font-[400]'><a href={`/posts/${post.id}`}>{post.title}</a></p>
           {/* <p className='post-content'>{post.content}</p> */}
-          <p className=''>Author: <span className='text-[brown]'>{post.author}</span></p>
+          <p className=''>By: <span className='text-[brown]'>{post.author}</span></p>
         </div>
       ))}
     </div>
