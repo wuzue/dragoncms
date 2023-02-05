@@ -2,6 +2,12 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
+const bcrypt = require('bcrypt')
+const basicAuth = require('express-basic-auth')
+const multer = require('multer')
+
+const USERNAME = 'admin'
+const PASSWORD = 'dragonadmin'
 
 app.use(cors({
   origin: 'http://localhost:5173',
@@ -12,13 +18,26 @@ app.use(cors({
 
 app.use(express.json());
 
-// Connect to SQLite database
+const defaultAdmin = {
+  username: 'admin',
+  password: bcrypt.hashSync('password', 10)
+};
+
+// Connect to Posts SQLite database
 const db = new sqlite3.Database('./posts.db', (err) => {
   if (err) {
     console.error(err.message);
   }
   console.log('Connected to the posts database.');
 });
+
+// Connect to Users SQLite database
+const dbUsers = new sqlite3.Database('./users.db', (err) => {
+  if(err){
+    console.error(err.message);
+  }
+  console.log('Connected to the users database');
+})
 
 // Create posts table if it does not exist
 const createTable = `CREATE TABLE IF NOT EXISTS posts (
@@ -28,6 +47,25 @@ const createTable = `CREATE TABLE IF NOT EXISTS posts (
   author TEXT NOT NULL
 );`;
 db.run(createTable, (err) => {
+  if (err) {
+    console.error(err.message);
+  }
+});
+
+const createUsersTable = `CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT NOT NULL,
+  password TEXT NOT NULL
+);`;
+dbUsers.run(createUsersTable, (err) => {
+  if(err){
+    console.error(err.message);
+  }
+});
+
+const insertDefaultAdmin = `INSERT INTO users (username, password) 
+               VALUES (?, ?);`;
+dbUsers.run(insertDefaultAdmin, [defaultAdmin.username, defaultAdmin.password], function(err) {
   if (err) {
     console.error(err.message);
   }
@@ -89,6 +127,32 @@ app.delete('/posts/:id', (req, res) => {
     }
     console.log(`Post with id ${id} has been deleted`);
     res.send({ message: 'Post deleted successfully' });
+  });
+});
+
+app.post('/auth', (req, res) => {
+  const { username, password } = req.body
+
+  if (username === USERNAME && password === PASSWORD) {
+    res.status(200).json({ message: 'User is authenticated' })
+  } else {
+    res.status(401).json({ message: 'User is not authenticated' })
+  }
+})
+
+//edit post endpoint
+app.put('/posts/:id', (req, res) => {
+  const id = req.params.id;
+  const updatedPost = req.body;
+  const sql = `UPDATE posts
+               SET title = ?, content = ?, author = ?
+               WHERE id = ?`;
+  db.run(sql, [updatedPost.title, updatedPost.content, updatedPost.author, id], function(err) {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).send({ error: 'An error occurred while updating the post' });
+    }
+    res.send({ message: 'Post updated successfully' });
   });
 });
 
