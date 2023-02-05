@@ -2,14 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
+import DOMPurify from 'dompurify';
+import { Editor, EditorState } from 'draft-js';
+import 'draft-js/dist/Draft.css'
 
 const AdminPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isAuthorized, setIsAuthorized] = useState(false);
-
+  const [editingPostId, setEditingPostId] = useState(null)
   const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
+  const [content, setContent] = React.useState(
+    () => EditorState.createEmpty(),
+  )
   const [author, setAuthor] = useState('')
 
   const [posts, setPosts] = useState([])
@@ -17,25 +22,62 @@ const AdminPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const response = await fetch('http://localhost:3000/posts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title,
-        content,
-        author,
-      }),
-    })
-    if (response.ok){
-      setTitle('');
-      setContent('');
-      setAuthor('')
-      window.alert('success')
-    }else{
-      //error msg
+    if (editingPostId) {
+      // Update post
+      const response = await fetch(`http://localhost:3000/posts/${editingPostId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title,
+          content,
+          author,
+        }),
+      })
+      try{
+      if (response.ok) {
+        setTitle('')
+        setContent('')
+        setAuthor('')
+        setEditingPostId(null)
+        window.alert('Post updated successfully')
+      } 
+    } catch(error){
+      console.error(error)
     }
+      // else {
+      //   // handle error
+      //   console.log(Error)
+      // }
+    } else {
+      const response = await fetch('http://localhost:3000/posts', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      title,
+      content,
+      author,
+    }),
+  })
+  if (response.ok){
+    setTitle('');
+    setContent('');
+    // setContent(DOMPurify.sanitize(''))
+    setAuthor('')
+    window.alert('success')
+  }else{
+    //error msg
+  }
+    }
+  }
+
+  //sanitaze react quill text
+  const handleChange = (value) => {
+    const sanitizedValue = DOMPurify.sanitize(value);
+    setContent(sanitizedValue);
   }
 
   useEffect(() => {
@@ -66,6 +108,14 @@ const AdminPage = () => {
     }else{
       // console.error(error)
     }
+  }
+
+  const handleEditPost = (id) => {
+    const post = posts.find(post => post.id === id)
+    setTitle(post.title)
+    setContent(post.content)
+    setAuthor(post.author)
+    setEditingPostId(id)
   }
 
   //CHANGE IT!!!!!!!!!!!!!!!!!!!! ITS ONLY FOR DEVELOPMENT
@@ -109,34 +159,27 @@ const AdminPage = () => {
       />
       <ReactQuill
         value={content}
-        onChange={(value) => setContent(value)}
+        onChange={handleChange}
       />
-      {/* <textarea
-        placeholder="Content"
-        value={content}
-        onChange={(event) => setContent(event.target.value)}
-      /> */}
       <input
         type='text'
         placeholder='Author'
         value={author}
         onChange={(event) => setAuthor(event.target.value)}
       />
-      <button type="submit">Create Post</button>
+      <button type='submit'>
+        {editingPostId ? 'Update' : 'Create'}
+      </button>
     </form>
-    <div id='posts-admin' className=''>
-      <p className='font-[700] text-[1.2rem] uppercase'><span className='bg-[black] pr-[1rem] pl-[1rem] text-[white]'>Blog posts</span></p>
-      <div className=''>
-        {posts.map(post => (
-          <div key={post.id} className='border-b-[1px]'>
-            <p className='text-[1.1rem] font-[600] mt-[.5rem]'><a target='_blank' href={`/posts/${post.id}`}>{post.title}</a></p>
-            {/* <p className='post-content'>{post.content}</p> */}
-            <p className=''>Author: <span className='text-[brown]'>{post.author}</span></p>
-            <button className='bg-[red] text-white pr-[.1rem]' onClick={() => handleDeletePost(post.id)}>Delete Post</button>
-          </div>
-        ))}
+    {posts.map(post => (
+      <div key={post.id}>
+        <h3>{post.title}</h3>
+        <p>{post.content}</p>
+        <p>Author: {post.author}</p>
+        <button onClick={() => handleEditPost(post.id)}>Edit</button>
+        <button onClick={() => handleDeletePost(post.id)}>Delete</button>
       </div>
-    </div>
+    ))}
   </>);
 };
 

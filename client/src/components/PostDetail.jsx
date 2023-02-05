@@ -15,7 +15,8 @@ const PostDetail = () => {
   return (
     <div>
       <h2>{post.title}</h2>
-      <p className="text-[2rem] text-[blue]">{post.content}</p>
+      {/* <p>{post.content}</p> */}
+       <div dangerouslySetInnerHTML={{__html: post.content}}></div>
       <p>Author: {post.author}</p>
     </div>
   );
