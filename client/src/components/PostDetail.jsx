@@ -19,7 +19,8 @@ const PostDetail = () => {
 
       <div className="flex flex-col justify-center items-center mt-[1.5rem]">
         <p className="flex-1 text-center text-[2rem] font-bold">{post.title}</p>
-        {new Date().toLocaleDateString('en-us', { weekday:"long", month:"long", day:"numeric"})}
+        {/* {new Date().toLocaleDateString('en-us', { weekday:"long", month:"long", day:"numeric"})} */}
+        <p>{post.date}</p>
         <p className="italic mt-[1rem] mb-[2rem]">By: {post.author}</p>
       </div>
 

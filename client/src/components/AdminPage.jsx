@@ -8,7 +8,6 @@ import 'draft-js/dist/Draft.css'
 
 const AdminPage = () => {
   const currentDate = new Date()
-  const formattedDate = currentDate.toLocaleString()
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -18,7 +17,7 @@ const AdminPage = () => {
     () => EditorState.createEmpty(),
   )
   const [author, setAuthor] = useState('')
-
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const [posts, setPosts] = useState([])
   const [socket, setSocket] = useState(null)
 
@@ -35,7 +34,8 @@ const AdminPage = () => {
           title,
           content,
           author,
-          created_at: new Date().toLocaleString(),
+          // created_at: new Date().toLocaleString(),
+          // date,
         }),
       })
       try{
@@ -54,15 +54,20 @@ const AdminPage = () => {
       //   console.log(Error)
       // }
     } else {
+      
       const response = await fetch('http://localhost:3000/posts', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
+      
       title,
       content,
       author,
+      // date: new Date(date).toLocaleDateString('default', { month: 'short', day: 'numeric'})
+      date: new Date(date).toUTCString()
+      // date: formattedDate
     }),
   })
   if (response.ok){
@@ -70,6 +75,7 @@ const AdminPage = () => {
     setContent('');
     // setContent(DOMPurify.sanitize(''))
     setAuthor('')
+    setDate('')
     window.alert('success')
   }else{
     //error msg
@@ -118,6 +124,7 @@ const AdminPage = () => {
     setTitle(post.title)
     setContent(post.content)
     setAuthor(post.author)
+    setDate(post.date)
     setEditingPostId(id)
   }
 
@@ -153,6 +160,9 @@ const AdminPage = () => {
     );
   }
 
+  const dateStr = new Date(date).toUTCString();
+  const dateObj = new Date(dateStr);
+  const formattedDate = dateObj.toLocaleDateString('default', { month: 'short', day: 'numeric' });
   return (<>
     <div className='grid grid-cols-2'>
     <form className='border-2 mb-[2rem] w-[50%]' onSubmit={handleSubmit}>
@@ -173,6 +183,11 @@ const AdminPage = () => {
         value={author}
         onChange={(event) => setAuthor(event.target.value)}
       />
+      <input
+        type='date'
+        value={date}
+        onChange={(event) => setDate(event.target.value)}
+      />
       <button type='submit'>
         {editingPostId ? 'Update' : 'Create'}
       </button>
@@ -184,8 +199,8 @@ const AdminPage = () => {
         <p><span className='font-bold'>Title:</span> {post.title}</p>
         <p><span className='font-bold'>Content:</span> {post.content}</p>
         <p><span className='font-bold'>Author:</span> {post.author}</p>
-        <p><span className='font-bold'>On:</span> {post.date}</p>
-        <p>Created at: {post.created_at}</p>
+        <p><span className='font-bold'>Created on:</span> {post.date}</p>
+        {/* <p>Created at: {post.created_at}</p> */}
         <button className='bg-[yellow] pl-[.2rem] pr-[.2rem]' onClick={() => handleEditPost(post.id)}>Edit</button>
         <button className='bg-[red] pl-[.2rem] pr-[.2rem] text-white ml-[.5rem]' onClick={() => handleDeletePost(post.id)}>Delete</button>
       </div>
