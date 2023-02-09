@@ -7,6 +7,8 @@ import { Editor, EditorState } from 'draft-js';
 import 'draft-js/dist/Draft.css'
 
 const AdminPage = () => {
+  const currentDate = new Date()
+  const formattedDate = currentDate.toLocaleString()
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -33,6 +35,7 @@ const AdminPage = () => {
           title,
           content,
           author,
+          created_at: new Date().toLocaleString(),
         }),
       })
       try{
@@ -125,32 +128,35 @@ const AdminPage = () => {
     if (username === 'admin' && password === 'dragon') {
       setIsAuthorized(true);
     } else {
+      window.alert('errado kkkk')
       console.log(`errado manoookkkkk`)
     }
   };
 
   if (!isAuthorized) {
     return (
-      <form onSubmit={handleLogin}>
-        <input
+      <form onSubmit={handleLogin} className='text-[1.5rem] h-screen flex flex-col justify-center items-center'>
+        <input className='border-b-[1px] mb-[1rem]'
           type="text"
           placeholder="Username"
           value={username}
           onChange={(event) => setUsername(event.target.value)}
         />
-        <input
+        <input className='border-b-[1px]'
           type="password"
           placeholder="Password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
         />
-        <button type="submit">Login</button>
+        <button type="submit" className='border-2 p-[.2rem] mt-[1rem]' >Login</button>
       </form>
     );
   }
 
   return (<>
-    <form onSubmit={handleSubmit}>
+    <div className='grid grid-cols-2'>
+    <form className='border-2 mb-[2rem] w-[50%]' onSubmit={handleSubmit}>
+      <p className='font-bold mb-[1rem] underline'>Create a new post</p>
       <input
         type="text"
         placeholder="Title"
@@ -170,16 +176,22 @@ const AdminPage = () => {
       <button type='submit'>
         {editingPostId ? 'Update' : 'Create'}
       </button>
+    {/* <hr></hr> */}
     </form>
+    <div>
     {posts.map(post => (
-      <div key={post.id}>
-        <h3>{post.title}</h3>
-        <p>{post.content}</p>
-        <p>Author: {post.author}</p>
-        <button onClick={() => handleEditPost(post.id)}>Edit</button>
-        <button onClick={() => handleDeletePost(post.id)}>Delete</button>
+      <div className='border-b-2 mb-[.5rem]' key={post.id}>
+        <p><span className='font-bold'>Title:</span> {post.title}</p>
+        <p><span className='font-bold'>Content:</span> {post.content}</p>
+        <p><span className='font-bold'>Author:</span> {post.author}</p>
+        <p><span className='font-bold'>On:</span> {post.date}</p>
+        <p>Created at: {post.created_at}</p>
+        <button className='bg-[yellow] pl-[.2rem] pr-[.2rem]' onClick={() => handleEditPost(post.id)}>Edit</button>
+        <button className='bg-[red] pl-[.2rem] pr-[.2rem] text-white ml-[.5rem]' onClick={() => handleDeletePost(post.id)}>Delete</button>
       </div>
     ))}
+    </div>
+    </div>
   </>);
 };
 
