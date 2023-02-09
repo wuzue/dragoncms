@@ -44,7 +44,8 @@ const createTable = `CREATE TABLE IF NOT EXISTS posts (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   title TEXT NOT NULL,
   content TEXT NOT NULL,
-  author TEXT NOT NULL
+  author TEXT NOT NULL,
+  date TEXT NOT NULL
 );`;
 db.run(createTable, (err) => {
   if (err) {
@@ -101,9 +102,9 @@ app.get("/posts/:id", (req, res) => {
 // Route to add a new post
 app.post('/posts', (req, res) => {
   const newPost = req.body;
-  const sql = `INSERT INTO posts (title, content, author) 
-               VALUES (?, ?, ?);`;
-  db.run(sql, [newPost.title, newPost.content, newPost.author], function(err) {
+  const sql = `INSERT INTO posts (title, content, author, date) 
+               VALUES (?, ?, ?, ?);`;
+  db.run(sql, [newPost.title, newPost.content, newPost.author, newPost.date], function(err) {
     if (err) {
       console.error(err.message);
       return res.status(500).send({ error: 'An error occurred while adding the post' });
@@ -145,9 +146,9 @@ app.put('/posts/:id', (req, res) => {
   const id = req.params.id;
   const updatedPost = req.body;
   const sql = `UPDATE posts
-               SET title = ?, content = ?, author = ?
+               SET title = ?, content = ?, author = ?, date = ?
                WHERE id = ?`;
-  db.run(sql, [updatedPost.title, updatedPost.content, updatedPost.author, id], function(err) {
+  db.run(sql, [updatedPost.title, updatedPost.content, updatedPost.author, updatedPost.date, id], function(err) {
     if (err) {
       console.error(err.message);
       return res.status(500).send({ error: 'An error occurred while updating the post' });
