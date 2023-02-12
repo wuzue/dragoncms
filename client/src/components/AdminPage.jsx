@@ -168,6 +168,7 @@ const AdminPage = () => {
     <form className='border-2 mb-[2rem] w-[50%]' onSubmit={handleSubmit}>
       <p className='font-bold mb-[1rem] underline'>Create a new post</p>
       <input
+        className='w-[100%]'
         type="text"
         placeholder="Title"
         value={title}
@@ -178,17 +179,19 @@ const AdminPage = () => {
         onChange={handleChange}
       />
       <input
+        className='w-[100%]'
         type='text'
         placeholder='Author'
         value={author}
         onChange={(event) => setAuthor(event.target.value)}
       />
       <input
+        className=''
         type='date'
         value={date}
         onChange={(event) => setDate(event.target.value)}
       />
-      <button type='submit'>
+      <button type='submit' className='bg-[black] text-white p-[.5rem]'>
         {editingPostId ? 'Update' : 'Create'}
       </button>
     {/* <hr></hr> */}

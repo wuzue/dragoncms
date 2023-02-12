@@ -59,10 +59,21 @@ const Blog = () => {
   const paginate = pageNumber => setCurrentPage(pageNumber)
 
   return (<>
-    <div className='flex flex-col items-center mt-[.5rem]'>
-      <a href='/'><img className='w-[150px] rounded-full shadow-[0px_8px_24px_rgb(0,0,0,12%)]' src={dragon} alt='dragon'/></a>
-      <h1 className='mt-[.5rem] text-[2rem] font-[600]'>{blogTitle}</h1>
-      <h2 className='text-[1.4rem] mt-[-.5rem]'>{blogSubTitle}</h2>
+  <div id='main-div'>
+    <div id='header-div' className='flex justify-evenly'>
+      <div className='flex text-[1.2rem] font-[500]'>
+        <p className='pr-[2rem]'><a href='/'>Press</a></p>
+        <p><a href='/'>Research</a></p>
+      </div>
+      <div id='logo-div' className='flex flex-col items-center mt-[.5rem]'>
+        <a href='/'><img id='blog-logo' className='w-[150px] rounded-full shadow-[0px_8px_24px_rgb(0,0,0,12%)]' src={dragon} alt='dragon'/></a>
+        <h1 id='h1-blog' className='mt-[.5rem] text-[2rem] font-[600]'>{blogTitle}</h1>
+        <h2 id='h2-blog' className='text-[1.4rem] mt-[-.5rem]'>{blogSubTitle}</h2>
+      </div>
+      <div className='flex text-[1.2rem] font-[500]'>
+        <p className='pr-[2rem]'><a href='/'>Docs</a></p>
+        <p><a href='/'>About me</a></p>
+      </div>
     </div>
 
     {/* default posts mapping */}
@@ -75,19 +86,19 @@ const Blog = () => {
       ))}
     </div> */}
 
-    <div className='grid grid-cols-5 gap-[2rem] text-center mt-[10rem]'>
+    <div id='posts-div' className='grid grid-cols-5 gap-[2rem] text-center mt-[10rem]'>
       {currentPosts.map(post => (
         <div key={post.id}>
           <p className='text-[1.5rem] text-[blue] font-[400]'><a href={`/posts/${post.id}`}>{post.title}</a></p>
           {/* <p className='post-content'>{post.content}</p> */}
-          <p className=''>By: <span className='text-[brown]'>{post.author}</span></p>
-          <p>Created at: {post.created_at}</p>
+          <p className=''><b>By:</b> <span className='text-[brown]'>{post.author}</span></p>
+          <p><b>On:</b> {post.date}</p>
         </div>
       ))}
     </div>
 
     
-    <div className='flex justify-center mt-[10rem]'>
+    <div id='pagination' className='flex justify-center mt-[10rem]'>
       <button className='pr-[.3rem] text-[blue] font-[500]' onClick={previousPage}>Previous Page</button>
       {/* <Pagination
         postsPerPage={postsPerPage}
@@ -99,8 +110,9 @@ const Blog = () => {
       <button className='pl-[.5rem] text-[blue] font-[500]' onClick={nextPage}>Next Page</button>
     </div>
 
-    <div className='flex absolute bottom-0 pl-[.3rem] text-[.8rem]'>
-      <p>Powered by <a href='https://github.com/wuzue/dragoncms' target='_blank'><span className='font-bold'>DragonCMS</span></a></p>
+    {/* <div id='sponsored' className='flex pl-[.3rem] text-[.8rem]'>
+      <p className=''>Powered by <a href='https://github.com/wuzue/dragoncms' target='_blank'><span className='font-bold'>DragonCMS</span></a></p>
+    </div> */}
     </div>
   </>);
 };
