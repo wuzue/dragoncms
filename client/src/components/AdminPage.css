@@ -1,0 +1,11 @@
+.container {
+  display: grid;
+  grid-template-columns: .5fr 3fr; /* Set the sidebar to take 1/4 of the available space and the main content to take 3/4 of the available space */
+  grid-gap: 5rem; /* Add some spacing between the two columns */
+}
+
+.container #side-menu.sidebar {
+  /* background-color: #f2f2f2; */
+  /* background-color: red; */
+  padding: 20px;
+}

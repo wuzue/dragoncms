@@ -5,9 +5,12 @@ import 'react-quill/dist/quill.snow.css'
 import DOMPurify from 'dompurify';
 import { Editor, EditorState } from 'draft-js';
 import 'draft-js/dist/Draft.css'
+import './AdminPage.css'
 
 const AdminPage = () => {
   const currentDate = new Date()
+  const [showBlogPosts, setShowBlogPosts] = useState(true)
+  const [showCreatePost, setShowCreatePost] = useState(false)
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -20,6 +23,16 @@ const AdminPage = () => {
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const [posts, setPosts] = useState([])
   const [socket, setSocket] = useState(null)
+
+  const handleBlogPostClick = () => {
+    setShowBlogPosts(true)
+    setShowCreatePost(false)
+  }
+
+  const handleCreatePostClick = () => {
+    setShowBlogPosts(false)
+    setShowCreatePost(true)
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -140,6 +153,8 @@ const AdminPage = () => {
     }
   };
 
+  
+
   if (!isAuthorized) {
     return (
       <form onSubmit={handleLogin} className='text-[1.5rem] h-screen flex flex-col justify-center items-center'>
@@ -163,9 +178,20 @@ const AdminPage = () => {
   const dateStr = new Date(date).toUTCString();
   const dateObj = new Date(dateStr);
   const formattedDate = dateObj.toLocaleDateString('default', { month: 'short', day: 'numeric' });
+
   return (<>
-    <div className='grid grid-cols-2'>
-    <form className='border-2 mb-[2rem] w-[50%]' onSubmit={handleSubmit}>
+    <div className='container'>
+      <div id='side menu' className='sidebar bg-[red]'>
+        <p className='' onClick={handleBlogPostClick}><span className=''>Blog Posts</span></p>
+        {/* <div className='w-full bg-[gray] h-[1px] '></div> */}
+        <p className='' onClick={handleCreatePostClick}><span className=''>Create Post</span></p>
+        {/* <div className='w-full bg-[gray] h-[1px]'></div> */}
+      </div>
+      {/* {showBlogPosts && <div>Blog posts go here</div>} */}
+    {/* {showCreatePost && <div>Create post form goes here</div>} */}
+
+    <div id='FORM+POSTS' className='grid grid-cols-1'>
+    {showCreatePost && <form className='border-2 mb-[2rem] w-[100%] bg-[red]' onSubmit={handleSubmit}>
       <p className='font-bold mb-[1rem] underline'>Create a new post</p>
       <input
         className='w-[100%]'
@@ -195,8 +221,8 @@ const AdminPage = () => {
         {editingPostId ? 'Update' : 'Create'}
       </button>
     {/* <hr></hr> */}
-    </form>
-    <div>
+    </form>}
+    {showBlogPosts && <div>
     {posts.map(post => (
       <div className='border-b-2 mb-[.5rem]' key={post.id}>
         <p><span className='font-bold'>Title:</span> {post.title}</p>
@@ -208,6 +234,7 @@ const AdminPage = () => {
         <button className='bg-[red] pl-[.2rem] pr-[.2rem] text-white ml-[.5rem]' onClick={() => handleDeletePost(post.id)}>Delete</button>
       </div>
     ))}
+    </div>}
     </div>
     </div>
   </>);

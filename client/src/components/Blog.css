@@ -21,3 +21,22 @@ h1{
     position: static;
   }
 }
+
+@media (max-width:1359px){
+  #pagination{
+    margin-top: 5rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (min-width:1360px){
+  #pagination{
+    margin-bottom: 1rem;
+  }
+}
+
+body{
+  background-color: #EFEFF0
+}
+
+/* div{border:1px solid red;} */
