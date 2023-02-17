@@ -181,17 +181,20 @@ const AdminPage = () => {
 
   return (<>
     <div className='container'>
-      <div id='side menu' className='sidebar bg-[red]'>
-        <p className='' onClick={handleBlogPostClick}><span className=''>Blog Posts</span></p>
-        {/* <div className='w-full bg-[gray] h-[1px] '></div> */}
-        <p className='' onClick={handleCreatePostClick}><span className=''>Create Post</span></p>
-        {/* <div className='w-full bg-[gray] h-[1px]'></div> */}
+      <div id='side menu' className='sidebar fixed w-[15rem] h-[100vh] bg-[#4C4B63] shadow-[0px_8px_24px_rgb(0,0,0,30%)]'>
+        <p className={showCreatePost ? "hover:cursor-pointer text-[white] active:bg-[#9493B6] p-3" : "active"} onClick={handleBlogPostClick}><span className='font-[500]'>Blog Posts</span></p>
+        <div className='w-full bg-[gray] h-[1px] '></div>
+        <p id='posthover' className={showBlogPosts ? "hover:cursor-pointer text-[white] active:bg-[#9493B6] p-3" : "active"} onClick={handleCreatePostClick}><span className=' font-[500]'>Create Post</span></p>
+        <div className='w-full bg-[gray] h-[1px]'></div>
+        <div className='absolute bottom-1 left-1'>
+          <p className='text-[white]'>Powered by <b>DragonCMS</b></p>
+        </div>
       </div>
       {/* {showBlogPosts && <div>Blog posts go here</div>} */}
     {/* {showCreatePost && <div>Create post form goes here</div>} */}
 
-    <div id='FORM+POSTS' className='grid grid-cols-1'>
-    {showCreatePost && <form className='border-2 mb-[2rem] w-[100%] bg-[red]' onSubmit={handleSubmit}>
+    <div id='formposts' className='grid grid-cols-2 mt-[1rem] pl-[20rem]'>
+    {showCreatePost && <form className='border-2 mb-[2rem] h-[15rem]' onSubmit={handleSubmit}>
       <p className='font-bold mb-[1rem] underline'>Create a new post</p>
       <input
         className='w-[100%]'

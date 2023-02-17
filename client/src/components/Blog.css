@@ -1,7 +1,8 @@
+
 h1{
-  font-family: sans-serif;
-  text-transform:uppercase;
-  font-weight: 700;
+  /* font-family: 'Helvetica Neue'; */
+  /* text-transform:uppercase; */
+  
 }
 .post-content{
   font-size: 1.1rem;
@@ -39,4 +40,4 @@ body{
   background-color: #EFEFF0
 }
 
-/* div{border:1px solid red;} */
+/* div{border:1px solid red; */
