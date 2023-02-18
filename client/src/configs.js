@@ -1,2 +1,2 @@
 export const blogTitle = 'Blog Title'
-export const blogSubTitle = 'This is not the blog title'
+export const blogSubTitle = "Whether you're a designer, developer, or just curious about the world of Lorem ipsum, this blog is the ultimate resource for all things related to this timeless placeholder text."

@@ -4,6 +4,9 @@ h1{
   /* text-transform:uppercase; */
   
 }
+.date-font{
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+}
 .post-content{
   font-size: 1.1rem;
   font-family: sans-serif;
@@ -25,14 +28,20 @@ h1{
 
 @media (max-width:1359px){
   #pagination{
-    margin-top: 5rem;
+    /* margin-top: 5rem; */
     margin-bottom: 1rem;
   }
 }
 
-@media (min-width:1360px){
+@media (min-width:1367px){
+  #header-div{
+    margin-bottom:2.5rem;
+  }
+  #subtitle-div{
+    margin-bottom:5rem;
+  } 
   #pagination{
-    margin-bottom: 1rem;
+    margin-top: 5rem;
   }
 }
 
@@ -41,3 +50,136 @@ body{
 }
 
 /* div{border:1px solid red; */
+
+  /* header top div */
+  nav {
+    /* position: fixed; */
+    top: 0;
+    width: 100%;
+    height: 4rem;
+    /* background: linear-gradient(45deg, rgb(156, 14, 156), midnightblue); */
+    margin-top: -.4rem;
+  }
+  
+  .list{
+    list-style-type: none;
+    /* background: linear-gradient(45deg, rgb(156, 14, 156), midnightblue); */
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .items{
+    margin-right: 20px;
+    font-size: 20px;
+    text-transform: uppercase;
+    /* color: #f1f1f1; */
+    cursor: pointer;
+  }
+  
+  .btn{
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 7px;
+    padding: 5px;
+    color: #000;
+    font-size: 18px;
+  }
+  
+  .crypto-logo-text{
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    display: none;
+    /* color: white; */
+  }
+  
+  .crypto-logo-text-mobile{
+    font-size: 25px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    /* color: white; */
+    margin-right: 1.4rem;
+  }
+  
+  /* curve */
+  .wrapper{
+    position: relative;
+    background: lightgray;
+  }
+  
+  .custom-shape-divider-bottom-1668349927 {
+    position: absolute;
+    bottom: -1rem;
+    top: 15px;
+    margin-top: -5rem;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+    z-index: -1;
+    /* color: #3629b0; */
+    /* background-color: #3629b0; */
+  }
+  
+  .custom-shape-divider-bottom-1668349927 svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    /* margin-top: 20px; */
+    height: 60px;
+    background-color: #3629b0;
+  }
+  
+  .custom-shape-divider-bottom-1668349927 .shape-fill {
+    fill: white;
+  }
+  
+  /* curve end */
+  @media screen and (max-width:940px){
+    .list{
+      flex-direction: column;
+      height: auto;
+      /* background-color: #3629b0; */
+      background-color: lightgray;
+      border:1px solid gray;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+      position: absolute;
+      top:0;
+      right:0;
+      width: 68%;
+      border-radius: 14px 14px;
+    }
+  
+    .crypto-logo-text{
+      display: block;
+      /* color: white; */
+      padding-top: .4rem;
+    }
+  
+    .crypto-logo-text-mobile{
+      display: none;
+    }
+    
+    .items:nth-child(1){
+      border-top: 1px solid rgb(255, 255, 255, 0.555);
+      margin-top: 50px;
+    }
+  
+    .items{
+      width: 100%;
+      border-top: 1px solid rgb(255, 255, 255, 0.555);
+      text-align: center;
+      margin-right: 0px;
+      padding: 20px 0;
+    }
+  
+    .btn{
+      display: block;
+    }
+  }
